@@ -4,6 +4,7 @@ Copyright © 2024 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
+	"github.com/timzolleis/hfu-ain-pas/cli/utils"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -34,13 +35,22 @@ func Execute() {
 }
 
 func init() {
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
+	rootCmd.PersistentFlags().StringP("target", "t", "", "The target to connect to")
+	rootCmd.PersistentFlags().StringP("user", "u", "", "The user to connect as")
+	rootCmd.PersistentFlags().StringP("password", "p", "", "The password to use")
+	setup()
+}
 
-	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.cli.yaml)")
+func setup() {
+	var config *utils.Config
+	if !utils.HasConfig() {
+		config = utils.QueryConfig()
+	} else {
+		config = utils.ReadConfig()
+	}
+	utils.UpdateConfig(rootCmd, config)
+	if !config.KeyUploaded {
+		utils.SetupSsh(config)
+	}
 
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

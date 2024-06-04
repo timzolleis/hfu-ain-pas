@@ -2,7 +2,6 @@
 
 Tim Zolleis
 
-27068
 
 1d): TTY liefert die aktuelle Konsole (bei grafisch: `/dev/pts/0`), oder aber bei mehreren offenen Terminals die
 jeweiligen Konsolen (`/dev/tty3/`, `/dev/tty4`)
